@@ -1,0 +1,14 @@
+Package: FASTcure
+Type: Package
+Title: optimized version of package <smcure> 
+Version: 0.6
+Date: 2023-09-16
+Author: Zhou JJ
+Maintainer: Zhou JJ <actionsafe@163.com>
+Description: highly optimized version using Rcpp, fully compatible with smcure
+Depends: survival, stats, graphics, foreach, parallel, doParallel, progress
+License: GPL (>= 3)
+Imports: Rcpp (>= 1.0.9)
+LinkingTo: Rcpp
+RoxygenNote: 7.2.3
+Encoding: UTF-8
