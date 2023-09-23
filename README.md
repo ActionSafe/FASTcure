@@ -58,7 +58,7 @@ The following screenshot shows that after optimization, you can use all of your 
 ![fastcure](imgs/fastcure.png)
 
 ### 2.2. Bug fix
-1. factor variable in incidence model
+#### factor variable in incidence model
 
 ```R
 cvars <- all.vars(cureform)
@@ -74,7 +74,7 @@ b <- eval(parse(text = paste("glm", "(", "w~Z[,-1]",",family = quasibinomial(lin
 
 So I use `model.matrix` to extract covariates.
 
-2. One covariate problem
+#### One covariate problem
 
 When you specify only one covariate in submodels like the following code:
 
