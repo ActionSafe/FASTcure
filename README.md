@@ -6,12 +6,12 @@ An R-package for Estimating Semiparametric PH Cure Models. Optimized for big dat
 - [2. Modification](#2-modification)
   - [2.1. Efficiency](#21-efficiency)
   - [2.2. Bug fix](#22-bug-fix)
-    - [Problem with factor variable in incidence model](#problem-with-factor-variable-in-incidence-model)
-    - [Problem with one covariate](#problem-with-one-covariate)
-    - [Infinite bootstrap loop](#infinite-bootstrap-loop)
-- [Usage](#usage)
-- [3. Simulation result](#3-simulation-result)
-- [4. Todos](#4-todos)
+    - [2.2.1. Problem with factor variable in incidence model](#221-problem-with-factor-variable-in-incidence-model)
+    - [2.2.2. Problem with one covariate](#222-problem-with-one-covariate)
+    - [2.2.3. Infinite bootstrap loop](#223-infinite-bootstrap-loop)
+- [3. Usage](#3-usage)
+- [4. Simulation result](#4-simulation-result)
+- [5. Todos](#5-todos)
 
 
 ## 1. Motivation
@@ -63,7 +63,7 @@ The following screenshot shows that after optimization, you can use all of your 
 
 ### 2.2. Bug fix
 
-#### Problem with factor variable in incidence model
+#### 2.2.1. Problem with factor variable in incidence model
 
 ```R
 cvars <- all.vars(cureform)
@@ -79,7 +79,7 @@ b <- eval(parse(text = paste("glm", "(", "w~Z[,-1]",",family = quasibinomial(lin
 
 So I use `model.matrix` to extract covariates.
 
-#### Problem with one covariate
+#### 2.2.2. Problem with one covariate
 
 When you specify only one covariate in submodels like the following code:
 
@@ -94,7 +94,7 @@ exp(X[, -1] %*% beta)
 
 When X has only two columns, `X[, -1]` will produce an atomic vector instead of a matrix, this behaviour will cause `non-conformable arguments` error. So a `dim` attribute should be added to this vector to make it a matrix.
 
-#### Infinite bootstrap loop
+#### 2.2.3. Infinite bootstrap loop
 
 ```R
 i<-1
@@ -106,7 +106,7 @@ while (i<=nboot){
 
 When em does not converge (this is common when the dataset is relatively large), this loop will never finish.
 
-## Usage
+## 3. Usage
 
 ```R
 smcure(formula = lformula,
@@ -121,13 +121,13 @@ smcure(formula = lformula,
 `silence=TRUE`: reduce the number of messages printed to console
 
 
-## 3. Simulation result
+## 4. Simulation result
 
 Setting: `n=300, nsims = 500`
 
 ![sims](/imgs/sims.png)
 
-## 4. Todos
+## 5. Todos
 
 - use better std.error estimation method
 - testing AFT model
