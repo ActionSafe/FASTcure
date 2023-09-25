@@ -6,6 +6,10 @@ An R-package for Estimating Semiparametric PH Cure Models. Optimized for big dat
 - [2. Modification](#2-modification)
   - [2.1. Efficiency](#21-efficiency)
   - [2.2. Bug fix](#22-bug-fix)
+    - [Problem with factor variable in incidence model](#problem-with-factor-variable-in-incidence-model)
+    - [Problem with one covariate](#problem-with-one-covariate)
+    - [Infinite bootstrap loop](#infinite-bootstrap-loop)
+- [Usage](#usage)
 - [3. Simulation result](#3-simulation-result)
 - [4. Todos](#4-todos)
 
@@ -58,7 +62,8 @@ The following screenshot shows that after optimization, you can use all of your 
 ![fastcure](imgs/fastcure.png)
 
 ### 2.2. Bug fix
-#### factor variable in incidence model
+
+#### Problem with factor variable in incidence model
 
 ```R
 cvars <- all.vars(cureform)
@@ -74,7 +79,7 @@ b <- eval(parse(text = paste("glm", "(", "w~Z[,-1]",",family = quasibinomial(lin
 
 So I use `model.matrix` to extract covariates.
 
-#### One covariate problem
+#### Problem with one covariate
 
 When you specify only one covariate in submodels like the following code:
 
@@ -87,16 +92,45 @@ smcure will crash with error: `non-conformable arguments`, this problem is due t
 exp(X[, -1] %*% beta)
 ```
 
-When X has only two columns, `X[, -1]` will produce an atomic vector instead of a matrix, this behaviour will cause `non-conformable arguments` error. So you should add `dim` attribute to this vector to make it a matrix.
+When X has only two columns, `X[, -1]` will produce an atomic vector instead of a matrix, this behaviour will cause `non-conformable arguments` error. So a `dim` attribute should be added to this vector to make it a matrix.
+
+#### Infinite bootstrap loop
+
+```R
+i<-1
+while (i<=nboot){
+  # some code
+  if (bootfit$tau<eps) i<-i+1
+}
+```
+
+When em does not converge (this is common when the dataset is relatively large), this loop will never finish.
+
+## Usage
+
+```R
+smcure(formula = lformula,
+                cureform = iformula,
+                data = d, model = "ph",emmax = 100, eps = 1e-06, nboot = 50, mc.cores = 10, Var = TRUE, robust = TRUE, silence = TRUE)
+```
+
+`mc.cores = 10`: create 10 sub-processes to run bootstrap steps
+
+`robust = TRUE`: only use converged bootstrap step to caculate std.error
+
+`silence=TRUE`: reduce the number of messages printed to console
+
 
 ## 3. Simulation result
-`n=300, nsims = 500` 
+
+Setting: `n=300, nsims = 500`
 
 ![sims](/imgs/sims.png)
 
 ## 4. Todos
 
-- better std.error estimation method
+- use better std.error estimation method
 - testing AFT model
-- 
+- update docs
+- update plot function
 
