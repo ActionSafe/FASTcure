@@ -23,7 +23,7 @@ As you can see, when you feed too much data to smcure (in this case, I feed a `3
 
 ![smcure](imgs/smcure.png)
 
-After profiling smcure, I found this function consume the most CPU time:
+After profiling smcure, I found this performance bottleneck function:
 
 ```R
 smsurv <-
